@@ -19,6 +19,7 @@ import PersonTask.Person.Person;
 public class main {
 
 	/**
+	 * Class for application
 	 * @param args
 	 */
 	public static void main(String[] args) {

@@ -5,8 +5,17 @@ import java.util.Comparator;
 import PersonTask.Person.Person;
 import PersonTask.Repository.Repository;
 
+/**
+ * Class for sort Persons in repository with shackersort
+ * @author Kravchenko Denis
+ */
 public class ShakerSorter implements Sorter{
-
+	
+	/**
+	 * function, which sort Persons in repository by some comparator
+	 * @param repository
+	 * @param comparator	
+	 */
 	@Override
 	public void sort(Repository rep, Comparator<Person> comp) {
 		int left = 0;
