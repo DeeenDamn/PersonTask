@@ -1,5 +1,6 @@
 package PersonTask.Person;
 
+import org.apache.log4j.Logger;
 import org.joda.time.*;
 
 /**
@@ -14,13 +15,14 @@ public class Person {
 	private String FIO;
 	private String sex;
 	private LocalDate birthday;
-	private int age;
+	private static final Logger log = Logger.getLogger(Person.class);
 	
 	/**
 	 * set field id
 	 * @param id
 	 */
 	public void setId(int id){
+		log.debug("get Person's id");
 		this.id = id;
     }
 	
@@ -29,6 +31,7 @@ public class Person {
 	 * @return id
 	 */
 	public int getId(){
+		log.debug("set Person's id");
 		return id;
 	}
 	
@@ -37,6 +40,7 @@ public class Person {
 	 * @param name
 	 */
 	public void setFIO(String name) {
+		log.debug("set Person's FIO");
 		this.FIO = name;
 	}
 	
@@ -45,6 +49,7 @@ public class Person {
 	 * @return FIO
 	 */
 	public String getFIO() {
+		log.debug("get Person's FIO");
 		return FIO;
 	}
 	
@@ -53,6 +58,7 @@ public class Person {
 	 * @param sex
 	 */
 	public void setSex(String sex) {
+		log.debug("set Person's sex");
 		this.sex = sex;
 	}
 	
@@ -61,6 +67,7 @@ public class Person {
 	 * @return sex
 	 */
 	public String getSex() {
+		log.debug("get Person's sex");
 		return sex;
 	}
 	
@@ -70,6 +77,7 @@ public class Person {
 	 * @return Birthday (LocalDate)
 	 */
 	private LocalDate StrToDate(String date) {
+		log.debug("convert birthday to String");
 		String[] arr = date.split("/");
 		return new LocalDate(Integer.parseInt(arr[2]), Integer.parseInt(arr[1]), Integer.parseInt(arr[0]));
 	}
@@ -79,27 +87,19 @@ public class Person {
 	 * @return Birthday
 	 */
 	public String getBirthday() {
-		return this.birthday.toString("MM.dd.yyyy");
+		log.debug("get Person's birthday");
+		return this.birthday.toString("dd.MM.yyyy");
 	}
 	
 	/**
-	 * get field age
+	 * get age by Birthday//надо было исправить
 	 * @return age
 	 */
 	public int getAge() {
-		return this.age;
+		log.debug("get Person's age");
+		return Years.yearsBetween(this.birthday, new LocalDate()).getYears();
 	}
-	
-	/**
-	 * update field age 
-	 */
-	public void growUp() {
-		int a = Years.yearsBetween(this.birthday, new LocalDate()).getYears();
-		if (a > this.age) {
-			this.age = a;
-		}
-	}
-	
+
 	/**
 	 * constructor Person
 	 * @param id
@@ -108,11 +108,20 @@ public class Person {
 	 * @param day
 	 */
 	public Person(int id, String name, String sex, String day) {
+		log.debug("init Person");
 		this.id = id;
 		this.FIO = name;
 		this.sex = sex;
 		this.birthday = StrToDate(day);
-		this.age = Years.yearsBetween(this.birthday, new LocalDate()).getYears();
+	}
+	
+	/**
+	 * function, which print Person's fields
+	 * @return string
+	 */
+	public String print() {
+		log.debug("print Person " + getId() + " " + getFIO());
+		return getId() + " " + getFIO() + " " + getSex() + " " + getAge() + " " + getBirthday();
 	}
 }
 

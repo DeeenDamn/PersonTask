@@ -1,5 +1,7 @@
 package PersonTask.Checker;
 
+import org.apache.log4j.Logger;
+
 import PersonTask.Person.Person;
 
 /**
@@ -7,6 +9,7 @@ import PersonTask.Person.Person;
  * @author Kravchenko Denis
  */
 public class PersonFIOChecker implements Checker {
+	private static final Logger log = Logger.getLogger(PersonFIOChecker.class);
 	
 	/**
 	 * return true if Person with FIO = object exist
@@ -15,6 +18,7 @@ public class PersonFIOChecker implements Checker {
 	 */
 	@Override
 	public Boolean check(Person p, Object o) {
+		log.info("check Person " + p.getFIO() + " with " + o.toString());
 		return p.getFIO().equals(o);		
 	}
 

@@ -2,6 +2,8 @@ package PersonTask.Sorter;
 
 import java.util.Comparator;
 
+import org.apache.log4j.Logger;
+
 import PersonTask.Person.Person;
 import PersonTask.Repository.Repository;
 
@@ -10,6 +12,7 @@ import PersonTask.Repository.Repository;
  * @author Kravchenko Denis
  */
 public class InsertSorter implements Sorter {
+	private static final Logger log = Logger.getLogger(InsertSorter.class);
 	
 	/**
 	 * function, which sort Persons in repository by some comparator
@@ -18,6 +21,7 @@ public class InsertSorter implements Sorter {
 	 */
 	@Override
 	public void sort(Repository rep, Comparator<Person> comp) {
+		log.info("sort Repository with InsertSorter by " + comp.toString());
 		for (int i = 1; i < rep.getCount(); i++) {
             int j;
             Person tmp = rep.get(i);

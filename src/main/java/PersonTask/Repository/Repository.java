@@ -4,7 +4,10 @@
 package PersonTask.Repository;
 import java.util.Comparator;
 
-import PersonTask.Application.Inject;
+import org.apache.log4j.Logger;
+
+import PersonTask.Inject.Inject;
+import PersonTask.Inject.Injector;
 import PersonTask.Checker.Checker;
 import PersonTask.Person.Person;
 import PersonTask.Sorter.BubbleSorter;
@@ -22,21 +25,27 @@ public class Repository {
 		private Person[] list;
 		private int id = 1;
 		private int count = 0;
-		@Inject private Sorter sorter = new BubbleSorter();
+		@Inject
+		private Sorter sorter = null;
+		private static final Logger log = Logger.getLogger(Repository.class);
 		
 		/**
 		 * get count of Person in Repository
 		 * @return count
 		 */
 		public int getCount() {
-			return count;
+			log.info("get Repository's count");
+			return this.count;
 		}
 		
 		/**
 		 * Empty constructor
 		 */
 		public Repository() {
-			
+			log.info("init empty Repository");
+			this.list = new Person[0];
+			this.count = 0;
+			new Injector().dosomething(this);
 		}
 		
 		/**
@@ -45,8 +54,10 @@ public class Repository {
 		 * @param count
 		 */
 		public Repository(Person[] list, int count) {
+			log.info("init Repository with some Persons");
 			this.list = list;
 			this.count = count;
+			new Injector().dosomething(this);
 		}
 		
 		/**
@@ -54,9 +65,11 @@ public class Repository {
 		 * @param sorter
 		 */
 		public Repository(Sorter sorter) {
+			log.info("init empty Repository with sorter");
 			this.list = new Person[0];
 			this.sorter = sorter;
 			this.count = 0;
+			//new Injector().dosomething(this);
 		}
 		
 		/**
@@ -64,6 +77,7 @@ public class Repository {
 		 * @param person
 		 */
 		public void add(Person p) {
+			log.debug("add Person in Repository as Person "+ p.getId());
 			Person[] arr = new Person[count + 1];
 			for (int i = 0; i < count; i++) { 
 					arr[i] = list[i];
@@ -81,6 +95,7 @@ public class Repository {
 		 * @param day
 		 */
 		public void add(String name, String sex, String day) {
+			log.debug("add Person in Repository as fields " + count);
 			Person[] arr = new Person[count + 1];
 			for (int i = 0; i < count; i++) { 
 					arr[i] = list[i];
@@ -92,10 +107,11 @@ public class Repository {
 		}
 		
 		/**
-		 * function, which delete Person at index
+		 * function, which delete Person by index
 		 * @param index
 		 */
 		public void delete(int index) {
+			log.info("delete Person from Repository by index " + index);
 			this.count--;
 			int j = 0;
 			if (count > 0) {
@@ -116,6 +132,7 @@ public class Repository {
 		 * @return person
 		 */
 		public Person get(int index) {
+			log.debug("get Person from Repository at index " + index);
 			for (int i = 0; i < count; i++) {
 				if (i == index) {
 					return list[i];
@@ -130,6 +147,7 @@ public class Repository {
 		 * @param person
 		 */
 		public void set(int j, Person p) {
+			log.debug("set Person in Repository at index " + j + " " + p.getId());
 			Person[] arr = this.list;
 			this.list = new Person[0];
 			count=0;
@@ -144,20 +162,11 @@ public class Repository {
 		}
 		
 		/**
-		 * function, which print Person's fields
-		 * @param index
-		 * @return string
-		 */
-		public String print(int index) {
-			Person res = get(index);
-			return res.getId() + " " + res.getFIO() + " " + res.getSex() + " " + res.getAge() + " " + res.getBirthday();
-		}
-		
-		/**
 		 * function, which set Sorter 
 		 * @param sorter
 		 */
 		public void setSorter(Sorter sorter) {
+			log.info("set sorter to " + sorter.toString());
 			this.sorter = sorter;
 		}
 		
@@ -166,7 +175,8 @@ public class Repository {
 		 * @return sorter
 		 */
 		public Sorter getSorter() {
-			return sorter;
+			log.info("get sorter");
+			return this.sorter;
 		}
 		
 		/**
@@ -174,6 +184,7 @@ public class Repository {
 		 * @param comparator
 		 */
 		public void sort(Comparator<Person> comparator) {
+			log.info("sort Repository  with " + sorter.toString() + " by " + comparator.toString());
 	        sorter.sort(this, comparator);
 	    }
 		
@@ -184,6 +195,7 @@ public class Repository {
 		 * @return Repository
 		 */
 		public Repository find(Checker f, Object o) {
+			log.debug("find Persons by " + o.toString() + " and " + f.toString());
 			Repository res = new Repository();
 			for (int i=0; i< count; i++) {
 				if (f.check(this.get(i), o)){
