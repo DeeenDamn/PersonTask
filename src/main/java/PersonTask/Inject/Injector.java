@@ -44,12 +44,11 @@ public class Injector{
 					Class<?> value;
 					try {
 						Class r = obj.getClass();
-						Field[] field = r.getDeclaredFields();
-						value = Class.forName(prop.getProperty("Sorter.Sorter"));
+						Field[] field = r.getDeclaredFields();						
 						for (int i=0; i< field.length; i++) {
 							Annotation[] an = field[i].getAnnotations();
-							for(int j=0; j< an.length; j++) {
-								if (an[j].toString().equals("@PersonTask.Inject.Inject()")) {
+							if (field[i].isAnnotationPresent(Inject.class)) {
+									value = Class.forName(prop.getProperty(field[i].getType().getName()));
 									field[i].setAccessible(true); 
 									try {
 										field[i].set(obj, value.newInstance());
@@ -58,7 +57,6 @@ public class Injector{
 										e.printStackTrace();
 									} 
 								}
-							}
 						}
 					} catch (ClassNotFoundException e) {
 						log.error("class by name not found");
